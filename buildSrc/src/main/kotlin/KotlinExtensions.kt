@@ -107,3 +107,7 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.windowsTest(block: KotlinSourceS
     block(sourceSet)
 }
 
+fun NamedDomainObjectContainer<KotlinSourceSet>.ohosArm64Main(block: KotlinSourceSet.() -> Unit) {
+    val sourceSet = findByName("ohosArm64Main") ?: return
+    block(sourceSet)
+}

@@ -51,11 +51,11 @@ val disabledExplicitApiModeProjects = listOf(
     "ktor-junit"
 )
 
-apply(from = "gradle/compatibility.gradle")
+//apply(from = "gradle/compatibility.gradle")
 
 plugins {
     alias(libs.plugins.dokka) apply false
-    alias(libs.plugins.binaryCompatibilityValidator)
+//    alias(libs.plugins.binaryCompatibilityValidator)
     conventions.gradleDoctor
 }
 

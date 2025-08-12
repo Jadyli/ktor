@@ -1,12 +1,12 @@
 [versions]
 
-kotlin = "2.0.21"
+kotlin = "2.0.21-KBA-005"
 kotlinx-html = "0.11.0"
 kotlinx-datetime = "0.6.1"
-kotlinx-io = "0.5.4"
-coroutines = "1.9.0"
-atomicfu = "0.26.1"
-serialization = "1.7.3"
+kotlinx-io = "0.5.4-KBA-001"
+coroutines = "1.8.0-KBA-001"
+atomicfu = "0.23.2-KBA-001"
+serialization = "1.7.3-KBA-001"
 binaryCompatibilityValidator = "0.16.3"
 dokka = "1.9.20"
 kover = "0.9.0"
@@ -127,6 +127,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 
 kotlinx-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "kotlinx-browser" }
+
+atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 
 dokka-plugin-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
 

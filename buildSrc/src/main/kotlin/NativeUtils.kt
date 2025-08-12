@@ -79,3 +79,9 @@ fun Project.windowsTargets(): List<String> = with(kotlin) {
         mingwX64()
     ).map { it.name }
 }
+
+fun Project.ohosTargets(): List<String> = with(kotlin) {
+    listOf(
+        ohosArm64()
+    ).map { it.name }
+}

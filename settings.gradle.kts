@@ -4,6 +4,9 @@
 
 pluginManagement {
     includeBuild("gradle-settings-conventions")
+    plugins {
+        id("org.jetbrains.kotlin.multiplatform") version "2.0.21-KBA-005"
+    }
 }
 
 plugins {

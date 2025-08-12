@@ -62,6 +62,10 @@ private val androidNativeTargets = setOf(
     "androidNativeX86",
 )
 
+private val ohosTargets = setOf(
+    "ohosArm64",
+)
+
 fun Project.configurePublication() {
     apply(plugin = "maven-publish")
 
@@ -152,7 +156,7 @@ fun Project.configurePublication() {
 private fun Publication.isAvailableForPublication(): Boolean {
     val name = name
 
-    var result = name in jvmAndCommonTargets || name in jsTargets || name in androidNativeTargets
+    var result = name in jvmAndCommonTargets || name in jsTargets || name in androidNativeTargets || name in ohosTargets
     result = result || (HOST_NAME == "linux" && name in linuxTargets)
     result = result || (HOST_NAME == "windows" && name in windowsTargets)
     result = result || (HOST_NAME == "macos" && name in darwinTargets)
@@ -167,6 +171,7 @@ private fun Project.configureAggregatingTasks() {
     if (hasWindows) registerAggregatingTask("Windows", windowsTargets)
     if (hasDarwin) registerAggregatingTask("Darwin", darwinTargets)
     if (hasAndroidNative) registerAggregatingTask("AndroidNative", androidNativeTargets)
+    if (hasOhos) registerAggregatingTask("Ohos", ohosTargets)
 }
 
 private fun Project.registerAggregatingTask(name: String, targets: Set<String>) {

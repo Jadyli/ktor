@@ -12,6 +12,7 @@ fun Project.configureCommon() {
             commonMain {
                 dependencies {
                     api(libs.kotlinx.coroutines.core)
+                    api(libs.atomicFu)
                 }
             }
 
