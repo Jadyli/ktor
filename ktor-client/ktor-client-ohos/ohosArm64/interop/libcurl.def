@@ -1,0 +1,3 @@
+package = libcurl
+headers = curl/curl.h
+headerFilter = curl/*
