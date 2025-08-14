@@ -11,24 +11,24 @@ import platform.posix.*
 import kotlin.experimental.*
 import kotlin.native.concurrent.*
 
-@OptIn(ExperimentalStdlibApi::class)
-@EagerInitialization
-private val init = setSignalHandler()
+//@OptIn(ExperimentalStdlibApi::class)
+//@EagerInitialization
+//private val init = setSignalHandler()
 
 @InternalAPI
 @OptIn(ExperimentalForeignApi::class)
 public object ThreadInfo {
     @OptIn(ObsoleteWorkersApi::class)
-    private val threads = ConcurrentMap<Worker, pthread_t>(initialCapacity = 32)
+    private val threads = ConcurrentMap<Worker, ULong>(initialCapacity = 32)
 
     init {
-        init
+//        init
     }
 
-    @OptIn(ObsoleteWorkersApi::class)
+    @OptIn(ObsoleteWorkersApi::class, ExperimentalStdlibApi::class)
     public fun registerCurrentThread() {
         @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val thread = pthread_self()!!
+        val thread = Worker.current.platformThreadId!!
         threads[Worker.current] = thread
     }
 
@@ -37,37 +37,37 @@ public object ThreadInfo {
         threads.remove(worker)
     }
 
-    @OptIn(ExperimentalNativeApi::class, ObsoleteWorkersApi::class)
-    public fun getAllStackTraces(): List<WorkerStacktrace> {
-        if (kotlin.native.Platform.osFamily == OsFamily.WINDOWS) return emptyList()
-
-        val result = mutableListOf<WorkerStacktrace>()
-        val removed = mutableSetOf<Worker>()
-        for ((worker, thread) in threads.entries) {
-            try {
-                val name = worker.name
-                val stack = collectStack(thread)
-                result += WorkerStacktrace(name, stack)
-            } catch (_: Throwable) {
-                removed.add(worker)
-            }
-        }
-
-        removed.forEach {
-            threads.remove(it)
-        }
-
-        return result
-    }
-
-    public fun printAllStackTraces() {
-        getAllStackTraces().forEach {
-            println(it.worker)
-            it.stacktrace.forEach {
-                println("\tat $it")
-            }
-        }
-    }
+//    @OptIn(ExperimentalNativeApi::class, ObsoleteWorkersApi::class)
+//    public fun getAllStackTraces(): List<WorkerStacktrace> {
+//        if (kotlin.native.Platform.osFamily == OsFamily.WINDOWS) return emptyList()
+//
+//        val result = mutableListOf<WorkerStacktrace>()
+//        val removed = mutableSetOf<Worker>()
+//        for ((worker, thread) in threads.entries) {
+//            try {
+//                val name = worker.name
+//                val stack = collectStack(thread)
+//                result += WorkerStacktrace(name, stack)
+//            } catch (_: Throwable) {
+//                removed.add(worker)
+//            }
+//        }
+//
+//        removed.forEach {
+//            threads.remove(it)
+//        }
+//
+//        return result
+//    }
+//
+//    public fun printAllStackTraces() {
+//        getAllStackTraces().forEach {
+//            println(it.worker)
+//            it.stacktrace.forEach {
+//                println("\tat $it")
+//            }
+//        }
+//    }
 
     @OptIn(ObsoleteWorkersApi::class)
     public fun stopAllWorkers() {
@@ -87,7 +87,7 @@ public class WorkerStacktrace(
     public val stacktrace: List<String>
 )
 
-@OptIn(ExperimentalForeignApi::class)
-internal expect fun collectStack(thread: pthread_t): List<String>
-
-internal expect fun setSignalHandler()
+//@OptIn(ExperimentalForeignApi::class)
+//internal expect fun collectStack(thread: pthread_t): List<String>
+//
+//internal expect fun setSignalHandler()

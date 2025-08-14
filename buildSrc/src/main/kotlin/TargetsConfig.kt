@@ -27,9 +27,10 @@ val Project.hasJsAndWasmShared: Boolean get() = hasCommon || hasNonJvm || files.
 val Project.hasJs: Boolean get() = hasJsAndWasmShared || files.any { it.name == "js" }
 val Project.hasWasmJs: Boolean get() = hasJsAndWasmShared || files.any { it.name == "wasmJs" }
 val Project.hasJvm: Boolean get() = hasCommon || hasJvmAndPosix || files.any { it.name == "jvm" }
+val Project.hasOhos: Boolean get() = hasNix || files.any { it.name == "ohosArm64" }
 
 val Project.hasExplicitNative: Boolean
-    get() = hasNix || hasPosix || hasLinux || hasAndroidNative || hasDarwin || hasDesktop || hasWindows
+    get() = hasNix || hasPosix || hasLinux || hasAndroidNative || hasDarwin || hasDesktop || hasWindows || hasOhos
 val Project.hasNative: Boolean
     get() = hasCommon || hasExplicitNative
 
@@ -49,6 +50,7 @@ fun Project.configureTargets() {
         if (hasAndroidNative) androidNativeTargets()
         if (hasDesktop) desktopTargets()
         if (hasWindows) windowsTargets()
+        if (hasOhos) ohosTargets()
 
         applyHierarchyTemplate(hierarchyTemplate)
     }
@@ -97,6 +99,8 @@ private val hierarchyTemplate = KotlinHierarchyTemplate {
                         withAndroidNativeArm32Fixed()
                     }
                 }
+
+                group("ohosArm64") { withOhosArm64() }
             }
         }
 

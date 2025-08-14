@@ -6,6 +6,6 @@ package io.ktor.util
 
 import platform.posix.*
 
-internal actual fun collectStack(thread: pthread_t): List<String> = emptyList()
-
-internal actual fun setSignalHandler() = Unit
+//internal actual fun collectStack(thread: pthread_t): List<String> = emptyList()
+//
+//internal actual fun setSignalHandler() = Unit

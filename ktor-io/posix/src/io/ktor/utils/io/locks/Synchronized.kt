@@ -2,6 +2,8 @@
  * Copyright 2014-2024 JetBrains s.r.o and contributors. Use of this source code is governed by the Apache 2.0 license.
  */
 
+@file:OptIn(ExperimentalStdlibApi::class, ObsoleteWorkersApi::class)
+
 package io.ktor.utils.io.locks
 
 import io.ktor.io.interop.mutex.*
@@ -12,6 +14,9 @@ import kotlin.concurrent.AtomicNativePtr
 import kotlin.concurrent.AtomicReference
 import kotlin.native.concurrent.*
 import kotlin.native.internal.NativePtr
+
+private typealias pthread_t = ULong
+private fun pthread_self(): ULong = Worker.current.platformThreadId
 
 /**
  * [SynchronizedObject] from `kotlinx.atomicfu.locks`
