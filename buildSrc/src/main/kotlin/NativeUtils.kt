@@ -6,7 +6,7 @@ import org.gradle.api.*
 
 fun Project.posixTargets(): List<String> = nixTargets() + windowsTargets()
 
-fun Project.nixTargets(): List<String> = darwinTargets() + linuxTargets() + androidNativeTargets()
+fun Project.nixTargets(): List<String> = darwinTargets() + linuxTargets() + androidNativeTargets() + ohosTargets()
 
 fun Project.androidNativeTargets(): List<String> = with(kotlin) {
     if (project.targetIsEnabled("androidNative")) listOf(

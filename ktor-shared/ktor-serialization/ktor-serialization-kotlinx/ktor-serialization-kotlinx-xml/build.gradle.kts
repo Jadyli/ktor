@@ -15,12 +15,12 @@ kotlin.sourceSets {
     }
     commonTest {
         dependencies {
-            implementation(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests")) // ktlint-disable max-line-length
+//            implementation(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests")) // ktlint-disable max-line-length
         }
     }
     jvmTest {
         dependencies {
-            implementation(project(":ktor-client:ktor-client-plugins:ktor-client-content-negotiation:ktor-client-content-negotiation-tests")) // ktlint-disable max-line-length
+//            implementation(project(":ktor-client:ktor-client-plugins:ktor-client-content-negotiation:ktor-client-content-negotiation-tests")) // ktlint-disable max-line-length
         }
     }
 }

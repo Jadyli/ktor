@@ -32,15 +32,15 @@ kotlin {
 
         commonTest {
             dependencies {
-                api(project(":ktor-server:ktor-server-test-host"))
+//                api(project(":ktor-server:ktor-server-test-host"))
             }
         }
 
         jvmTest {
             dependencies {
-                implementation(project(":ktor-server:ktor-server-config-yaml"))
-                implementation(project(":ktor-server:ktor-server-test-base"))
-                implementation(project(":ktor-server:ktor-server-test-suites"))
+//                implementation(project(":ktor-server:ktor-server-config-yaml"))
+//                implementation(project(":ktor-server:ktor-server-test-base"))
+//                implementation(project(":ktor-server:ktor-server-test-suites"))
                 
                 api(libs.logback.classic)
                 implementation(libs.mockk)

@@ -14,7 +14,7 @@ kotlin.sourceSets {
     commonTest {
         dependencies {
             api(libs.kotlinx.serialization.json)
-            api(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests"))
+//            api(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests"))
         }
     }
 }

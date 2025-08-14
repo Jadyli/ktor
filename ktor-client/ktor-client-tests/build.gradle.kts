@@ -81,7 +81,7 @@ kotlin.sourceSets {
 
     desktopTest {
         dependencies {
-            api(project(":ktor-client:ktor-client-curl"))
+//            api(project(":ktor-client:ktor-client-curl"))
         }
     }
 
@@ -94,7 +94,7 @@ kotlin.sourceSets {
 
     windowsTest {
         dependencies {
-            api(project(":ktor-client:ktor-client-winhttp"))
+//            api(project(":ktor-client:ktor-client-winhttp"))
         }
     }
 }

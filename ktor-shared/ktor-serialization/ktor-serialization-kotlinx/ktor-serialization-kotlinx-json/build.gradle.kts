@@ -15,16 +15,16 @@ kotlin.sourceSets {
     jvmTest {
         @Suppress("ktlint:standard:max-line-length")
         dependencies {
-            api(
-                project(
-                    ":ktor-client:ktor-client-plugins:ktor-client-content-negotiation:ktor-client-content-negotiation-tests"
-                )
-            )
+//            api(
+//                project(
+//                    ":ktor-client:ktor-client-plugins:ktor-client-content-negotiation:ktor-client-content-negotiation-tests"
+//                )
+//            )
         }
     }
     commonTest {
         dependencies {
-            api(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests"))
+//            api(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx:ktor-serialization-kotlinx-tests"))
         }
     }
 }

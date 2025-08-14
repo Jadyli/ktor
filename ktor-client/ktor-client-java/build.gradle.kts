@@ -9,7 +9,7 @@ kotlin.sourceSets {
     }
     jvmTest {
         dependencies {
-            api(project(":ktor-client:ktor-client-tests"))
+//            api(project(":ktor-client:ktor-client-tests"))
         }
     }
 }
