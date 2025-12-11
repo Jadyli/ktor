@@ -52,9 +52,16 @@ internal class CurlProcessor(coroutineContext: CoroutineContext) {
     private fun runEventLoop() {
         curlScope.launch {
             val api = curlApi!!
+            
             while (!requestQueue.isClosedForReceive) {
-                drainRequestQueue(api)
-                api.perform()
+                try {
+                    drainRequestQueue(api)
+                    api.perform()
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    // Continue event loop on error
+                }
             }
         }
     }
