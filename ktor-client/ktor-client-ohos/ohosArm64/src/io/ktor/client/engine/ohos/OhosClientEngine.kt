@@ -23,19 +23,20 @@ internal class OhosClientEngine(
 
     override val supportedCapabilities = setOf(HttpTimeoutCapability, SSECapability)
 
-    private val curlProcessor = CurlProcessor(coroutineContext)
+    private val curlProcessor by lazy { CurlProcessor(coroutineContext) }
+    private val rcpProcessor by lazy { RcpProcessor(coroutineContext) }
 
     @InternalAPI
     override suspend fun execute(data: HttpRequestData): HttpResponseData {
         val callContext = callContext()
-
         val requestTime = GMTDate()
 
-        val curlRequest = data.toCurlRequest(config)
-        val responseData = curlProcessor.executeRequest(curlRequest)
-
-        return with(responseData) {
-            val headerBytes = ByteReadChannel(headersBytes).apply {
+        if (config.useRcp) {
+            // Use RCP API
+            val rcpRequest = data.toRcpRequest(config)
+            val responseData = rcpProcessor.executeRequest(rcpRequest)
+            
+            val headerBytes = ByteReadChannel(responseData.headersBytes).apply {
                 readUTF8Line()
             }
             val rawHeaders = parseHeaders(headerBytes)
@@ -46,22 +47,65 @@ internal class OhosClientEngine(
 
             rawHeaders.release()
 
-            val status = HttpStatusCode.fromValue(status)
+            val status = HttpStatusCode.fromValue(responseData.status)
 
             val responseBody: Any = data.attributes.getOrNull(ResponseAdapterAttributeKey)
-                ?.adapt(data, status, headers, bodyChannel, data.body, callContext)
-                ?: bodyChannel
+                ?.adapt(data, status, headers, responseData.bodyChannel, data.body, callContext)
+                ?: responseData.bodyChannel
 
-            HttpResponseData(
+            return HttpResponseData(
                 status,
                 requestTime,
                 headers,
-                version.fromCurl(),
+                responseData.version.fromRcp(),
                 responseBody,
                 callContext
             )
+        } else {
+            // Use Curl as fallback
+            val curlRequest = data.toCurlRequest(config)
+            val responseData = curlProcessor.executeRequest(curlRequest)
+            
+            val headerBytes = ByteReadChannel(responseData.headersBytes).apply {
+                readUTF8Line()
+            }
+            val rawHeaders = parseHeaders(headerBytes)
+            val headers = rawHeaders
+                .toBuilder().apply {
+                    dropCompressionHeaders(data.method, data.attributes)
+                }.build()
 
+            rawHeaders.release()
 
+            val status = HttpStatusCode.fromValue(responseData.status)
+
+            val responseBody: Any = data.attributes.getOrNull(ResponseAdapterAttributeKey)
+                ?.adapt(data, status, headers, responseData.bodyChannel, data.body, callContext)
+                ?: responseData.bodyChannel
+
+            return HttpResponseData(
+                status,
+                requestTime,
+                headers,
+                responseData.version.fromCurl(),
+                responseBody,
+                callContext
+            )
+        }
+    }
+    
+    override fun close() {
+        super.close()
+        
+        // Close RCP processor if it was used
+        // Note: lazy delegates are always initialized when accessed,
+        // so we just check the config to avoid unnecessary initialization
+        if (config.useRcp) {
+            try {
+                rcpProcessor.close()
+            } catch (e: Exception) {
+                // Ignore if processor was never initialized
+            }
         }
     }
 }
@@ -71,5 +115,3 @@ public class CurlIllegalStateException(cause: String) : IllegalStateException(ca
 
 @Deprecated("This exception will be removed in a future release in favor of a better error handling.")
 public class CurlRuntimeException(cause: String) : RuntimeException(cause)
-
-

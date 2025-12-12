@@ -78,7 +78,7 @@ internal class CurlFail(
 }
 
 @OptIn(DelicateCoroutinesApi::class)
-internal suspend fun OutgoingContent.toByteChannel(): ByteReadChannel = when (this@toByteChannel) {
+private suspend fun OutgoingContent.toByteChannel(): ByteReadChannel = when (this@toByteChannel) {
     is OutgoingContent.ByteArrayContent -> {
         val bytes = bytes()
         ByteReadChannel(bytes, 0, bytes.size)

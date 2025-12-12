@@ -8,6 +8,18 @@ import io.ktor.client.engine.HttpClientEngineConfig
 
 public class OhosClientEngineConfig: HttpClientEngineConfig() {
     /**
+     * Use HarmonyOS native RCP (Remote Communication Protocol) API instead of curl.
+     * 
+     * RCP is the recommended approach for HarmonyOS applications as it provides
+     * better integration with the platform and avoids potential curl-related issues.
+     * 
+     * Set to `false` to use curl as a fallback.
+     * 
+     * Default: `true`
+     */
+    public var useRcp: Boolean = false
+
+    /**
      * Forces proxy tunneling by setting `CURLOPT_HTTPPROXYTUNNEL`.
      */
     internal var forceProxyTunneling: Boolean = false

@@ -12,6 +12,10 @@ kotlin {
         definitionFile = File(projectDir, "ohosArm64/interop/libcurl.def")
         includeDirs(File(projectDir, "ohosArm64/interop/include/"))
     }
+    createCInterop("rcp", listOf("ohosArm64")) {
+        definitionFile = File(projectDir, "ohosArm64/interop/rcp.def")
+        includeDirs(File(projectDir, "ohosArm64/interop/include/"))
+    }
 
     sourceSets {
         ohosArm64Main {
