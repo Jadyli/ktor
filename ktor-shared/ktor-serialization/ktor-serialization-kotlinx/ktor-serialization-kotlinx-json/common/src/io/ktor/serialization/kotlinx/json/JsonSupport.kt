@@ -72,5 +72,5 @@ public fun Configuration.jsonIo(
     json: Json = DefaultJson,
     contentType: ContentType = ContentType.Application.Json
 ) {
-    register(contentType, ExperimentalJsonConverter(json))
+    serialization(contentType, json)
 }

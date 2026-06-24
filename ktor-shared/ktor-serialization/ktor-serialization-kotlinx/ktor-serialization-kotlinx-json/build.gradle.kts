@@ -9,7 +9,6 @@ kotlin.sourceSets {
         dependencies {
             api(project(":ktor-shared:ktor-serialization:ktor-serialization-kotlinx"))
             api(libs.kotlinx.serialization.json)
-            api(libs.kotlinx.serialization.json.io)
         }
     }
     jvmTest {

@@ -4,9 +4,14 @@
 
 import org.gradle.api.*
 
-fun Project.posixTargets(): List<String> = nixTargets() + windowsTargets()
+fun Project.posixTargets(): List<String> =
+    if (targetOhosOnly || targetOhosAndIosSimulatorOnly) ohosTargets() + iosTargets() else nixTargets() + windowsTargets()
 
-fun Project.nixTargets(): List<String> = darwinTargets() + linuxTargets() + androidNativeTargets() + ohosTargets()
+fun Project.nixTargets(): List<String> =
+    if (targetOhosOnly || targetOhosAndIosSimulatorOnly) ohosTargets() + iosTargets() else darwinTargets() + linuxTargets() + androidNativeTargets() + ohosTargets()
+
+private val Project.targetOhosOnly: Boolean get() = findProperty("target.ohosOnly") == "true"
+private val Project.targetOhosAndIosSimulatorOnly: Boolean get() = findProperty("target.ohosAndIosSimulatorOnly") == "true"
 
 fun Project.androidNativeTargets(): List<String> = with(kotlin) {
     if (project.targetIsEnabled("androidNative")) listOf(
@@ -24,7 +29,8 @@ fun Project.linuxTargets(): List<String> = with(kotlin) {
     )
 }.map { it.name }
 
-fun Project.darwinTargets(): List<String> = macosTargets() + iosTargets() + watchosTargets() + tvosTargets()
+fun Project.darwinTargets(): List<String> =
+    if (targetOhosAndIosSimulatorOnly) iosTargets() else macosTargets() + iosTargets() + watchosTargets() + tvosTargets()
 
 fun Project.macosTargets(): List<String> = with(kotlin) {
     listOf(
